@@ -1,12 +1,17 @@
 import pandas as pd
 import math
 
+
 def calc_shift(
-    margin_measure:float, model_line:float, market_line:float,
-    k:(float or int), b:(float or int), market_resist_factor:(float or int),
-    is_home:bool
+    margin_measure: float,
+    model_line: float,
+    market_line: float,
+    k: (float or int),
+    b: (float or int),
+    market_resist_factor: (float or int),
+    is_home: bool,
 ) -> float:
-    '''
+    """
     Calculates the amount of elo to shift the team
 
     Parameters:
@@ -21,7 +26,7 @@ def calc_shift(
 
     Returns:
     * elo_shift (float): how much the teams elo should be shifted by
-    '''
+    """
     ## update the lines for directionality. A negative spread means an expectation
     ## that the home team will win, thus their expected margin sign must be flipped
     ## whereas for teh away team, a spread represents their expected margin
@@ -60,10 +65,9 @@ def calc_shift(
     ## return the shift ##
     return shift
 
-def calc_weighted_avg(
-    shift_array:list    
-) -> float:
-    '''
+
+def calc_weighted_avg(shift_array: list) -> float:
+    """
     Calculates a normalized weighted average for a list of shift / weight pairs
     passed
 
@@ -72,7 +76,7 @@ def calc_weighted_avg(
 
     Returns:
     * weighted_avg (float)
-    '''
+    """
     ## structure ##
     product = 0
     weight = 0
@@ -85,12 +89,17 @@ def calc_weighted_avg(
     ## return ##
     return product / weight
 
+
 def calc_weighted_shift(
-    margin_array:list, model_line:float, market_line:float,
-    k:(float or int), b:(float or int), market_resist_factor:(float or int),
-    is_home:bool
+    margin_array: list,
+    model_line: float,
+    market_line: float,
+    k: (float or int),
+    b: (float or int),
+    market_resist_factor: (float or int),
+    is_home: bool,
 ) -> float:
-    '''
+    """
     Abstraction that calculates the weighted average elo shift provided a list
     of margin/weight tuples, where margin represents the game outcome measure (ie
     MoV, pff, wepa), and the weight represents how much of the overall shift it should
@@ -108,7 +117,7 @@ def calc_weighted_shift(
 
     Returns:
     * weighted_shift (float): the weighted average shift to adjust the team by
-    '''
+    """
     ## generate shifts / weight pairs ##
     shift_pairs = []
     for pair in margin_array:
@@ -117,13 +126,10 @@ def calc_weighted_shift(
         weight = pair[1]
         ## calc shift
         shift = calc_shift(
-            result, model_line, market_line, k,
-            b,market_resist_factor, is_home
+            result, model_line, market_line, k, b, market_resist_factor, is_home
         )
         ## add with weight to shift pairs ##
-        shift_pairs.append(
-            (shift, weight)
-        )
+        shift_pairs.append((shift, weight))
     ## create weighted average from shift pairs ##
     weighted_avg = calc_weighted_avg(shift_pairs)
     ## return ##

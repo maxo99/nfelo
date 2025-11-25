@@ -1,11 +1,12 @@
 import pandas as pd
 from .base import is_series
 
+
 def market_correl(
-      model_line:pd.Series,
-      market_line:pd.Series,
+    model_line: pd.Series,
+    market_line: pd.Series,
 ) -> pd.Series:
-    '''
+    """
     Calculates the correlation between the model and the market
 
     Parameters:
@@ -14,5 +15,5 @@ def market_correl(
 
     Returns:
     * correl: model<>market correlation
-    '''
+    """
     return model_line.corr(market_line)
